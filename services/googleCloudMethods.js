@@ -1,4 +1,5 @@
-import { Storage } from "@google-cloud/storage";
+import pkg from "@google-cloud/storage";
+const { Storage } = pkg;
 
 export async function getAllPublicImagesUrl() {
     const bucketName = process.env.BUCKET_NAME;
@@ -35,7 +36,7 @@ export async function uploadFileInBucket(filename) {
     const storage = new Storage();
 
     await storage.bucket(bucketName).upload(`to_upload_image/${filename}`, {
-        destination: filename,
+        destination: `${Date.now()}_${filename}`,
     });
     
     console.log(`${filename} uploaded to ${bucketName}`);

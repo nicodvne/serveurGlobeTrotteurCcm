@@ -1,4 +1,5 @@
-import {Storage} from '@google-cloud/storage';
+import pkg from "@google-cloud/storage";
+const { Storage } = pkg;
 import { uploadFileInBucket, getAllPublicImagesUrl } from '../services/googleCloudMethods.js';
 
 

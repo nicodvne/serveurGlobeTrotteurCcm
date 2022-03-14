@@ -146,3 +146,5 @@ dist
 credentials.json
 .images/
 images/
+.to_upload_image/
+to_upload_image/
