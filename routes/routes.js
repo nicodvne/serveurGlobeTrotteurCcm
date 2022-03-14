@@ -1,14 +1,23 @@
 import express from "express";
-import { createBucket, getFiles } from "../controllers/gcpController.js";
+import {  downloadFile,  getFilesUrl } from "../controllers/gcpController.js";
+import multer from "multer";
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'to_upload_image/');
+    },
+    filename: (req, file, cb) => {
+        cb(null,  Date.now() + '_' + file.originalname);
+    }
+});
+
+const upload = multer({storage: storage})
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send("Welcome HomePage")
-})
+router.get('/get-image-urls', getFilesUrl);
 
-router.get('/create-bucket/:name', createBucket);
+router.post('/download-image', upload.single('androidImage'), downloadFile);
 
-router.get('/get-image', getFiles);
 
 export default router;

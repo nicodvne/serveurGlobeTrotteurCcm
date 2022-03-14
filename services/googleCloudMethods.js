@@ -1,61 +1,22 @@
 import { Storage } from "@google-cloud/storage";
 
-//https://cloud.google.com/storage/docs/creating-buckets
-export async function createBucketWithStorageClassAndLocation(bucketName) {
-    const storage = new Storage();
-
-    console.log(bucketName);
-
-    // The name of a storage class
-    const storageClass = process.env.STORAGE_CLASS;
-
-    // The name of a location
-    const location = process.env.LOCATION;
-
-    const [bucket] = await storage.createBucket(bucketName, {
-        location,
-        [storageClass]: true,
-    });
-
-    console.log(
-        `${bucket.name} created with ${storageClass} class in ${location}`
-    );
-}
-
-//https://cloud.google.com/storage/docs/listing-objects#code-samples
-export async function dowloadAllFilesFromStorage() {
+export async function getAllPublicImagesUrl() {
     const bucketName = process.env.BUCKET_NAME;
     const storage = new Storage();
 
     const [files] = await storage.bucket(bucketName).getFiles();
 
-    console.log('Files:');
-    files.forEach(file => {
-        makeFilePublicInBucket(file.name);
-        dowloadFileFromStorage(file.name);
-    });
+
+    const links = {}
+
+    for(const file of Object.entries(files)) {
+        makeFilePublicInBucket(file[1].metadata.name);
+        links[file[1].metadata.name] = file[1].publicUrl();
+    }
+    
+    return links;
 }
 
-//https://cloud.google.com/storage/docs/downloading-objects#storage-download-object-nodejs
-async function dowloadFileFromStorage(fileName) {
-    // The ID of your GCS bucket
-    const bucketName = process.env.BUCKET_NAME;
-
-    // The path to which the file should be downloaded
-    const destFileName = `images/${fileName}`;
-
-    const storage = new Storage();
-
-    const options = {
-        destination: destFileName,
-      };
-
-    await storage.bucket(bucketName).file(fileName).download(options);
-
-    console.log(
-        `gs://${bucketName}/${fileName} downloaded to ${destFileName}.`
-    );
-}
 
 //https://cloud.google.com/storage/docs/access-control/making-data-public#storage-make-object-public-nodejs
 async function makeFilePublicInBucket(fileName) {
@@ -65,4 +26,17 @@ async function makeFilePublicInBucket(fileName) {
     await storage.bucket(bucketName).file(fileName).makePublic();
 
     console.log(`gs://${bucketName}/${fileName} is now public.`);
+}
+
+export async function uploadFileInBucket(filename) {
+    // The ID of your GCS bucket
+    const bucketName = process.env.BUCKET_NAME;
+
+    const storage = new Storage();
+
+    await storage.bucket(bucketName).upload(`to_upload_image/${filename}`, {
+        destination: filename,
+    });
+    
+    console.log(`${filename} uploaded to ${bucketName}`);
 }
