@@ -6,9 +6,7 @@ import { uploadFileInBucket, getAllPublicImagesUrl } from '../services/googleClo
 export const getFilesUrl = async (req, res) => {
     const links = await getAllPublicImagesUrl().catch(console.error);
 
-    console.log(typeof(links));
-
-    res.send(links);
+    res.render('photos', {datas: links});
 }
 
 export const uploadFile = (req, res) => {

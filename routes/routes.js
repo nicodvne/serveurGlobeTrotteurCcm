@@ -15,7 +15,7 @@ const upload = multer({storage: storage})
 
 const router = express.Router();
 
-router.get('/get-image-urls', getFilesUrl);
+router.get('/', getFilesUrl);
 
 router.post('/download-image', upload.single('androidImage'), downloadFile);
 
