@@ -5,9 +5,9 @@ on:
     branches: [main]
 
 env:
-  BUCKET_NAME=ccmglobetrotteurimgs
-  STORAGE_CLASS=standart
-  LOCATION=europe-west1
+  BUCKET_NAME: ccmglobetrotteurimgs
+  STORAGE_CLASS: standart
+  LOCATION: europe-west1
 
 jobs:
   Deploy-prod-CI:
