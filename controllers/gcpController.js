@@ -1,12 +1,17 @@
 import pkg from "@google-cloud/storage";
 const { Storage } = pkg;
-import { uploadFileInBucket, getAllPublicImagesUrl } from '../services/googleCloudMethods.js';
+import { uploadFileInBucket, getAllPublicImagesUrlAndName} from '../services/googleCloudMethods.js';
 
 
 export const getFilesUrl = async (req, res) => {
-    const links = await getAllPublicImagesUrl().catch(console.error);
+    var links = await getAllPublicImagesUrlAndName().catch(console.error); 
 
-    res.render('photos', {datas: links});
+    var datas = {};
+    for ( const [key, value] of Object.entries(links)) {
+        datas[key.split('_')[1].slice(0, -4)] = value;
+    }
+
+    res.render('photos', {datas: datas});
 }
 
 export const uploadFile = (req, res) => {

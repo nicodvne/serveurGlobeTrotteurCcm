@@ -1,7 +1,7 @@
 import pkg from "@google-cloud/storage";
 const { Storage } = pkg;
 
-export async function getAllPublicImagesUrl() {
+export async function getAllPublicImagesUrlAndName() {
     const bucketName = process.env.BUCKET_NAME;
     const storage = new Storage();
 

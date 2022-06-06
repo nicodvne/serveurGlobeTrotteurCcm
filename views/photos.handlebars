@@ -1,7 +1,7 @@
 {{#if datas}}
     {{#each datas}}
-        <h2>{{this}}</h2>
-        <img src="{{this}}" alt="{{this}}">
+        <h2> {{ @key }} </h2>
+        <img src="{{this}}" alt="{{this}}" width="500px" height="500px" >
     {{/each}}
 {{else}}
 <h1>Pas de photo a afficher</h1>
