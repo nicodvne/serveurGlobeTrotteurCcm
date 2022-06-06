@@ -1,7 +1,8 @@
 import express  from "express";
 import dotenv from "dotenv";
 import routes from "./routes/routes.js"
-import { engine } from 'express-handlebars';
+import pkg from 'express-handlebars';
+const { engine } = pkg;
 
 //Ajout de la possibilité d'utiliser des variables de config
 dotenv.config();
