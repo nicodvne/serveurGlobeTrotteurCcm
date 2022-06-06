@@ -1,0 +1,42 @@
+name: Prod Back End CI
+
+on:
+  push:
+    branches: [main]
+
+env:
+  BUCKET_NAME=ccmglobetrotteurimgs
+  STORAGE_CLASS=standart
+  LOCATION=europe-west1
+
+jobs:
+  Deploy-prod-CI:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Show where i am
+        run: |
+          pwd
+      - name: Whats inside
+        run: |
+          ls -a
+      - name: Authentication on app engine
+        id: 'auth'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.BACK_END_CREDENTIALS }}'
+
+      - name: Deploy Back End on app engine
+        id: 'deploy-app'
+        uses: google-github-actions/deploy-appengine@v0.2.0
+        with:
+          project_id: ${{ secrets.BACK_END_PROJECT_ID }}
+          deliverables: app.yaml
+          credentials: ${{ secrets.BACK_END_CREDENTIALS }}
