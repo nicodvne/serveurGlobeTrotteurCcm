@@ -1,8 +1,14 @@
 # [START gae_quickstart_yaml]
 runtime: nodejs
+
+env_variables:
+  BUCKET_NAME: "ccmglobetrotteurimgs"
+  STORAGE_CLASS: "standart"
+  LOCATION: "europe-west1"
+
 env: flex
 manual_scaling:
-  instances: 4
+  instances: 2
 resources:
   cpu: 1
   memory_gb: 0.5
